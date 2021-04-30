@@ -8,6 +8,8 @@ import webrtcvad
 from voice_detector import voice_detector
 import wave
 import numpy as np
+import keyboard
+from threading import Thread
 
 r = sr.Recognizer()
 
@@ -27,6 +29,10 @@ def change_language(recording, languages, previous_lang, language_changed):
     else:
         language_changed = False
         return previous_lang
+
+
+
+        
 
 
 fs = 44100
@@ -60,9 +66,13 @@ while True:
 
         if (detector.check_audio(frame) is True):
             
+            stream = sd.InputStream()
+
+            
 
             recording = sd.rec(int(duration * fs), samplerate=fs, channels=2)
             sd.wait()
+          
             write("audio.wav", recording, fs, sampwidth=2)
 
             with sr.WavFile("audio.wav") as source:
@@ -75,8 +85,10 @@ while True:
             lang = language
 
 
-            if (language_changed is False):
-                print(translator.translate(rec_audio, dest=language).text)
+            if (language_changed is False and language != "en"):
+                print((translator.translate(rec_audio, dest=language).text))
+                keyboard.write(translator.translate(rec_audio, dest=language).text)
+                keyboard.press_and_release('ENTER')
 
 
 
