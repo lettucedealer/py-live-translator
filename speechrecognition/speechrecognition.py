@@ -31,6 +31,9 @@ def change_language(recording, languages, previous_lang, language_changed):
         return previous_lang
 
 
+keyer = input("What key does your platform use to chat?\nWrite it as a capital (if it's the enter key, write ENTER, if its space write SPACE):")
+
+
 
         
 
@@ -87,6 +90,7 @@ while True:
 
             if (language_changed is False and language != "en"):
                 print((translator.translate(rec_audio, dest=language).text))
+                keyboard.press_and_release(keyer)
                 keyboard.write(translator.translate(rec_audio, dest=language).text)
                 keyboard.press_and_release('ENTER')
 
